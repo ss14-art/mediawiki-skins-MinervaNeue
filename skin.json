@@ -95,8 +95,8 @@
 		},
 		"MinervaNightMode": {
 			"value": {
-				"base": false,
-				"loggedin": false,
+				"base": true,
+				"loggedin": true,
 				"amc": true
 			}
 		},
@@ -626,7 +626,7 @@
 		}
 	},
 	"DefaultUserOptions": {
-		"minerva-theme": "day"
+		"minerva-theme": "night"
 	},
 	"manifest_version": 2
 }
