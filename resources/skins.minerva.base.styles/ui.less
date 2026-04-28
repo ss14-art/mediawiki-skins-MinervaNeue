@@ -226,8 +226,14 @@ main {
 
 // stylelint-disable selector-max-id
 #page-secondary-actions {
+	display: flex;
+	flex-wrap: wrap;
+
 	a {
-		margin: 10px 2px 2px 0;
+		flex: 1 1 10em;
+		margin: @spacing-125 @spacing-50 0 0;
+		max-width: 18em;
+		white-space: normal;
 	}
 }
 

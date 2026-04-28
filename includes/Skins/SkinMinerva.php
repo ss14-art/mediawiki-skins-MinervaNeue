@@ -969,6 +969,44 @@ class SkinMinerva extends SkinMustache {
 	}
 
 	/**
+	 * Returns an array with details for an edit button.
+	 * @param array $editAction Edit action data from content navigation
+	 * @return array
+	 */
+	protected function getEditButton( array $editAction ): array {
+		return [
+			'array-attributes' => [
+				[
+					'key' => 'href',
+					'value' => $editAction['href'],
+				],
+				[
+					'key' => 'data-event-name',
+					'value' => 'ui.edit-page',
+				]
+			],
+			'tag-name' => 'a',
+			'classes' => 'edit button',
+			'label' => $editAction['text'],
+		];
+	}
+
+	/**
+	 * Returns the preferred edit action for a page if one is available.
+	 * @param array $views
+	 * @return array|null
+	 */
+	private function getEditableView( array $views ): ?array {
+		foreach ( [ 've-edit', 'edit' ] as $key ) {
+			if ( isset( $views[$key] ) ) {
+				return $views[$key];
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Returns an array of links for page secondary actions
 	 * @param array $contentNavigationUrls
 	 * @return array|null
@@ -1003,6 +1041,11 @@ class SkinMinerva extends SkinMustache {
 
 				$buttons['talk'] = $this->getTalkButton( $talkTitle, $talkButton['text'] );
 			}
+		}
+
+		$editAction = $this->getEditableView( $contentNavigationUrls['views'] ?? [] );
+		if ( $editAction && $this->permissions->isAllowed( IMinervaPagePermissions::EDIT_OR_CREATE ) ) {
+			$buttons['edit'] = $this->getEditButton( $editAction );
 		}
 
 		if (
