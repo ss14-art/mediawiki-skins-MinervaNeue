@@ -694,8 +694,9 @@ class SkinMinerva extends SkinMustache {
 		if (
 			$this->skinOptions->get( SkinOptions::NIGHT_MODE ) || $forceNightMode !== null
 		) {
-			$user = $this->getUser();
-			$value = $this->userOptionsManager->getOption( $user, 'minerva-theme' );
+			// Keep night mode brutally simple for standalone deployments:
+			// when the feature is available, render the dark theme by default.
+			$value = 'night';
 
 			// if forcing a (valid) setting via query params, take priority over the user option
 			if ( $forceNightMode !== null && in_array( $forceNightMode, [ '1', '0', '2', 'day', 'night', 'os' ] ) ) {
