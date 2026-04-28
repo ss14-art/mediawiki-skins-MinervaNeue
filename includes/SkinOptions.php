@@ -211,4 +211,58 @@ final class SkinOptions {
 			( new HookRunner( $this->hookContainer ) )->onSkinMinervaOptionsInit( $skin, $this );
 		}
 	}
+
+	/**
+	 * Initialize standalone Minerva options when MobileFrontend is not installed.
+	 *
+	 * @param Skin $skin
+	 */
+	public function setStandaloneSkinOptions( Skin $skin ): void {
+		if ( !$skin instanceof SkinMinerva ) {
+			return;
+		}
+
+		$config = MediaWikiServices::getInstance()
+			->getConfigFactory()
+			->makeConfig( 'minerva' );
+		$nightMode = $config->get( 'MinervaNightMode' );
+
+		$this->setMultiple( [
+			self::NIGHT_MODE => $this->isStandaloneNightModeEnabled( $nightMode, $skin ),
+		] );
+		( new HookRunner( $this->hookContainer ) )->onSkinMinervaOptionsInit( $skin, $this );
+	}
+
+	/**
+	 * Resolve whether night mode should be available without MobileFrontend.
+	 *
+	 * @param mixed $nightMode
+	 * @param Skin $skin
+	 * @return bool
+	 */
+	private function isStandaloneNightModeEnabled( $nightMode, Skin $skin ): bool {
+		if ( is_bool( $nightMode ) ) {
+			return $nightMode;
+		}
+
+		if ( !is_array( $nightMode ) ) {
+			return false;
+		}
+
+		if ( $skin->getUser()->isRegistered() && array_key_exists( 'loggedin', $nightMode ) ) {
+			return (bool)$nightMode['loggedin'];
+		}
+
+		if ( array_key_exists( 'base', $nightMode ) ) {
+			return (bool)$nightMode['base'];
+		}
+
+		foreach ( $nightMode as $value ) {
+			if ( $value ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

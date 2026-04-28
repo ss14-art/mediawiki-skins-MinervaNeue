@@ -130,6 +130,10 @@ class SkinMinerva extends SkinMustache {
 		$this->revisionLookup = $revisionLookup;
 		$this->userIdentityUtils = $userIdentityUtils;
 		$this->userOptionsManager = $userOptionsManager;
+
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'MobileFrontend' ) ) {
+			$this->skinOptions->setStandaloneSkinOptions( $this );
+		}
 	}
 
 	/**
