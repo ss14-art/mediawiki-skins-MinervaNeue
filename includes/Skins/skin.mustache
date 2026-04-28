@@ -39,13 +39,20 @@
 				{{#talk}}
 				{{>Button}}
 				{{/talk}}
+				{{^is-title-blank}}
 				{{#edit}}
 				{{>Button}}
 				{{/edit}}
+				{{/is-title-blank}}
 				{{#language}}
 				{{>Button}}
 				{{/language}}
 			{{/data-minerva-secondary-actions}}
+			{{#is-title-blank}}
+				{{#data-minerva-page-actions}}
+				{{>PageActionsMenu}}
+				{{/data-minerva-page-actions}}
+			{{/is-title-blank}}
 			</div>
 			{{#html-categories}}
 			<div class="post-content">{{{.}}}</div>
